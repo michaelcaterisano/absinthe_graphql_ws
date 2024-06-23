@@ -29,7 +29,7 @@ defmodule AbsintheGraphqlWS.MixProject do
 
   defp deps do
     [
-      {:absinthe, "~> 1.6"},
+      {:absinthe, git: "https://github.com/Frameio/absinthe.git", tag: "v2024-06-18", override: true},
       {:absinthe_phoenix, "> 0.0.0"},
       {:benchee, "> 0.0.0", only: [:bench]},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
