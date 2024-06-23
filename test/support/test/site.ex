@@ -115,10 +115,7 @@ defmodule Test.Site do
       Supervisor.start_link(children, opts)
     end
 
-    defp pubsub_name,
-      do:
-        Application.get_env(:absinthe_graphql_ws, Test.Site.Endpoint)
-        |> Keyword.fetch!(:pubsub_server)
+    defp pubsub_name, do: Test.Site.EndpointPubSub
   end
 
   defmodule Web do
