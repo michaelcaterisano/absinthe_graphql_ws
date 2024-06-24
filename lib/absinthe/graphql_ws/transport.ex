@@ -24,7 +24,7 @@ defmodule Absinthe.GraphqlWS.Transport do
   @type socket() :: Socket.t()
 
   defmacrop debug(msg), do: quote(do: Logger.debug("[graph-socket@#{inspect(self())}] #{unquote(msg)}"))
-  defmacrop warn(msg), do: quote(do: Logger.warn("[graph-socket@#{inspect(self())}] #{unquote(msg)}"))
+  defmacrop warn(msg), do: quote(do: Logger.warning("[graph-socket@#{inspect(self())}] #{unquote(msg)}"))
 
   @doc """
   Generally this will only receive `:pong` messages in response to our keepalive
@@ -181,18 +181,10 @@ defmodule Absinthe.GraphqlWS.Transport do
   a stream.
   """
   def handle_subscribe(payload, id, socket) do
-    with %{schema: schema} <- socket.absinthe,
+    with %{schema: _schema} <- socket.absinthe,
          {:ok, variables} <- parse_variables(payload),
          {:ok, query} <- parse_query(payload) do
       opts = socket.absinthe.opts |> Keyword.merge(variables: variables)
-
-      Absinthe.Logger.log_run(:debug, {
-        query,
-        schema,
-        [],
-        opts
-      })
-
       run_doc(socket, id, query, socket.absinthe, opts)
     else
       _ ->
@@ -218,8 +210,6 @@ defmodule Absinthe.GraphqlWS.Transport do
   defp run_doc(socket, id, query, config, opts) do
     case run(query, config[:schema], config[:pipeline], opts) do
       {:ok, %{"subscribed" => topic}, context} ->
-        debug("subscribed to topic #{topic}")
-
         :ok =
           Phoenix.PubSub.subscribe(
             socket.pubsub,

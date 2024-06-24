@@ -104,7 +104,6 @@ defmodule Absinthe.GraphqlWS.Client do
           state.queries |> Map.delete(id)
 
         %{"id" => id} ->
-          # IO.inspect(message, label: "INBOUND")
           dispatch(id, message, state)
 
         %{"type" => "connection_ack"} ->
@@ -167,7 +166,6 @@ defmodule Absinthe.GraphqlWS.Client do
   end
 
   defp send_and_cache(id, from, message, %{queries: queries} = state) do
-    # IO.inspect(message, label: "OUTBOUND")
     state.transport.ws_send(state.gun, state.gun_stream_ref, {:text, Jason.encode!(message)})
     queries = Map.put(queries, id, from)
     state = Map.put(state, :queries, queries)
@@ -197,6 +195,5 @@ defmodule Absinthe.GraphqlWS.Client do
     end
   end
 
-  # defp debug(msg), do: Logger.debug("[client@#{inspect(self())}] #{msg}")
-  defp warn(msg), do: Logger.warn("[client@#{inspect(self())}] #{msg}")
+  defp warn(msg), do: Logger.warning("[client@#{inspect(self())}] #{msg}")
 end

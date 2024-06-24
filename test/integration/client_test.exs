@@ -47,9 +47,19 @@ defmodule Absinthe.GraphqlWS.ClientTest do
   end
 
   describe "handle_call" do
-    test "push connection init stores the caller with key connection_init", %{caller_pid: caller_pid, gun_pid: gun_pid, gun_stream_ref: gun_stream_ref} do
+    test "push connection init stores the caller with key connection_init", %{
+      caller_pid: caller_pid,
+      gun_pid: gun_pid,
+      gun_stream_ref: gun_stream_ref
+    } do
       {:noreply, state} =
-        Client.handle_call({:push, %{type: "connection_init"}}, caller_pid, %{queries: %{}, listeners: %{}, gun: gun_pid, gun_stream_ref: gun_stream_ref, transport: FakeTransport})
+        Client.handle_call({:push, %{type: "connection_init"}}, caller_pid, %{
+          queries: %{},
+          listeners: %{},
+          gun: gun_pid,
+          gun_stream_ref: gun_stream_ref,
+          transport: FakeTransport
+        })
 
       assert(state.queries == %{"connection_init" => caller_pid})
       assert(state.gun == gun_pid)
@@ -58,7 +68,14 @@ defmodule Absinthe.GraphqlWS.ClientTest do
     test "push message with id stores the caller on the id", %{caller_pid: caller_pid, gun_pid: gun_pid, gun_stream_ref: gun_stream_ref} do
       message_id = "bapbapaloobaabapbamboo"
 
-      {:noreply, state} = Client.handle_call({:push, %{id: message_id}}, caller_pid, %{queries: %{}, gun: gun_pid, gun_stream_ref: gun_stream_ref, transport: FakeTransport})
+      {:noreply, state} =
+        Client.handle_call({:push, %{id: message_id}}, caller_pid, %{
+          queries: %{},
+          gun: gun_pid,
+          gun_stream_ref: gun_stream_ref,
+          transport: FakeTransport
+        })
+
       assert(state.queries == %{message_id => caller_pid})
       assert(state.gun == gun_pid)
     end
