@@ -29,7 +29,7 @@ defmodule AbsintheGraphqlWS.MixProject do
 
   defp deps do
     [
-      {:absinthe, git: "https://github.com/Frameio/absinthe.git", tag: "v2024-06-18", override: true},
+      {:absinthe, "~> 1.6"},
       {:absinthe_phoenix, "> 0.0.0"},
       {:benchee, "> 0.0.0", only: [:bench]},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
@@ -37,7 +37,7 @@ defmodule AbsintheGraphqlWS.MixProject do
       {:dialyxir, "~> 1.0", only: [:dev, :test], runtime: false},
       {:eljiffy, "> 0.0.0", only: [:bench]},
       {:ex_doc, "~> 0.24", only: :dev, runtime: false},
-      {:gun, "~> 2.1", only: [:test], override: true},
+      {:gun, "~> 1.3", only: [:test]},
       {:jason, "~> 1.2", optional: true},
       {:markdown_formatter, "~> 0.5"},
       {:mix_audit, "~> 1.0", only: [:dev, :test], runtime: false},
